@@ -7,10 +7,12 @@ It uses a **thread pool** to efficiently handle multiple client connections conc
 
 ## Features
 
+
 * Serves static HTML pages from `static-pages/` directory.
 * Uses a fixed-size **thread pool** to handle concurrent clients.
 * Proper HTTP response headers, including `Content-Length` and `Content-Type`.
 * Graceful handling of file not found or read errors.
+* **Graceful shutdown on Ctrl+C**: cleans up thread pool and closes sockets properly.
 * Easy-to-extend architecture for future features (dynamic pages, MIME types, etc.).
 
 ---
@@ -67,6 +69,7 @@ make run
 [http://127.0.0.1:8080](http://127.0.0.1:8080)
 
 3. The server will serve `static-pages/index.html`.
+4. Press **Ctrl+C** to stop the server gracefully. The thread pool will be destroyed, and all sockets will be closed properly.
 
 ---
 
@@ -83,6 +86,8 @@ make run
 * Currently, the server always serves `index.html`.
 * You can extend it to parse the HTTP request and serve different pages based on the URL.
 * MIME types are currently hardcoded as `text/html`.
+* Graceful shutdown ensures no memory leaks or dangling threads when stopping the server.
+
 
 ---
 
