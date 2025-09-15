@@ -78,7 +78,13 @@ int run_server() {
         }
 
         *c_fd = new_socket;
-        thread_pool_add(&pool, serve_static_pages, (void *)c_fd);
+
+         if (thread_pool_add(&pool, serve_static_pages, (void *)c_fd) != 0) {
+            fprintf(stderr, "Failed to add task to thread pool\n");
+            free(c_fd); 
+            close(new_socket); 
+            continue;
+        }
     }
 
     printf("\nShutting down server...\n");

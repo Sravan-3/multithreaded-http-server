@@ -48,8 +48,20 @@ int thread_pool_init(thread_pool_t *pool, int queue_size){
         return -1;
     }
 
-    for (int i = 0; i < MAX_THREADS; i++) {
+    int i;
+    for (i = 0; i < MAX_THREADS; i++) {
         if (pthread_create(&pool->threads[i], NULL, do_task, (void *)pool) != 0) {
+            perror("pthread_create failed, cleaning up");
+
+            pool->shutdown = 1;
+            pthread_cond_broadcast(&pool->notify);
+            for (int j = 0; j < i; j++) {
+                pthread_join(pool->threads[j], NULL);
+            }
+
+            pthread_mutex_destroy(&pool->lock);
+            pthread_cond_destroy(&pool->notify);
+            free(pool->queue);
             return -1;
         }
     }
@@ -60,11 +72,13 @@ int thread_pool_init(thread_pool_t *pool, int queue_size){
 
 int thread_pool_add(thread_pool_t *pool, void (*function)(void *), void *arg){
 
-     pthread_mutex_lock(&pool->lock);
+     if (!pool || !function) return -1;
+
+    pthread_mutex_lock(&pool->lock);
 
     if (pool->count == pool->queue_size) {
         pthread_mutex_unlock(&pool->lock);
-        return -1; 
+        return -1;
     }
 
     pool->queue[pool->tail].function = function;
