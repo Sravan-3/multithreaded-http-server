@@ -86,9 +86,3 @@ Author
 
 Sravan Gandla
 [GitHub](https://github.com/sravan-3)
-
----
-
-License
-
-MIT License
