@@ -79,7 +79,7 @@ int run_server() {
 
         *c_fd = new_socket;
 
-         if (thread_pool_add(&pool, serve_static_pages, (void *)c_fd) != 0) {
+        if (thread_pool_add(&pool, serve_static_pages, (void *)c_fd) != 0) {
             fprintf(stderr, "Failed to add task to thread pool\n");
             free(c_fd); 
             close(new_socket); 
