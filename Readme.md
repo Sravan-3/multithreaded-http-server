@@ -18,7 +18,7 @@ It uses a **thread pool** to efficiently handle multiple client connections conc
 ## Project Structure
 
 ```
-mt-http-server/
+multithreaded-http-server/
 ├── main.c
 ├── Makefile
 ├── http-server/
