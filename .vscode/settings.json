@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "inet.h": "c",
+        "fcntl.h": "c",
+        "thread_db.h": "c"
+    }
+}
