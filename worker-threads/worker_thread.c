@@ -31,7 +31,7 @@ void serve_static_pages(void *client_fd_p) {
 
     char path[512];
     snprintf(path, sizeof(path),
-             "%s/mt-http-server/static-pages/index.html",
+             "%s/multithreaded-http-server/static-pages/index.html",
              getenv("HOME"));
 
     int static_page_fd = open(path, O_RDONLY);
